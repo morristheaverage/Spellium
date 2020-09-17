@@ -55,14 +55,14 @@ def spell(word: str, table: tuple) -> list:
     # Phew, a sensible person is calling this function
     if length == 1:
         # Evaluates to true if word exists in dictionary
-        # Check in the dictionary of single letter symbols
+        # Check in the dictionary of single letter symbols with a classy walrus operator
         if elem := table[0].get(word):
             return [elem]
         # If nothing was found raise SpellingError
         raise SpellingError
     if length == 2:
         # Evaluates to true if word exists in dictionary
-        # Check in the dictionary of two letter symbols
+        # Check in the dictionary of two letter symbols with yet another walrus boi
         if elem := table[1].get(word):
             return [elem]
         # Maybe two symbols can be joined together
@@ -75,19 +75,17 @@ def spell(word: str, table: tuple) -> list:
         # First try to match the first two chars
         prefix, suffix = word[:2], word[2:]
         try: # To use a two letter prefix
-            #TODO
-            # Q: walrus joke here...
+            # Q: What's the collective noun for a group of walrus operators?
             if prelem := table[1].get(prefix):
                 suflem = spell(suffix, table)
                 return [prelem] + suflem
             raise SpellingError
         except SpellingError:
             # And if you fail try a one letter prefix
-            prefix, suffix = word[:1], word[1:]
-            # Don't wrap this in a try except
+            # But don't wrap this one in a try except statement
             # If it dies it dies
-            #TODO
-            # A: ...walrus punchline here
+            prefix, suffix = word[:1], word[1:]
+            # A: There isn't one. It's unnecessary and would just obfuscate things.
             if prelem := table[0].get(prefix):
                 suflem = spell(suffix, table)
                 return [prelem] + suflem
