@@ -91,13 +91,20 @@ def spell(word: str, table: tuple) -> list:
                 return [prelem] + suflem
     raise SpellingError
 
+def chem_print(symbols: list) -> None:
+    """Neatly prints a chemical spelling
 
+    Args:
+        symbols (list): The list of elements
+    """    
+    for s in symbols:
+        print(str(e), end='')
+    print('')
 
 
 if __name__ == "__main__":
     # Make sure arguments were passed
-    argc = len(sys.argv)
-    if argc == 1:
+    if len(sys.argv) == 1:
         print("Expected 1 or more arguments - got 0")
         sys.exit(1)
 
@@ -114,12 +121,16 @@ if __name__ == "__main__":
     for arg in sys.argv[1:]:
         if os.path.isfile(arg):
             print(f"File argument detected - {arg}")
-            #TODO
+            with open(arg, 'r') as fp:
+                for line in fp:
+                    for word in line.split():
+                        try:
+                            chem_print(spell(word, PERIODIC_TABLE))
+                        except SpellingError:
+                            print(f"{arg} does not have a chemical spelling")
         else:
             try:
                 solution = spell(arg, PERIODIC_TABLE)
-                for e in solution:
-                    print(str(e), end='')
-                print('')
+                chem_print(solution)
             except SpellingError:
                 print(f"{arg} does not have a chemical spelling")
