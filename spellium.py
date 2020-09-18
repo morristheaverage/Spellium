@@ -98,7 +98,7 @@ def chem_print(symbols: list) -> None:
         symbols (list): The list of elements
     """    
     for s in symbols:
-        print(str(e), end='')
+        print(str(s), end='')
     print('')
 
 
@@ -120,17 +120,21 @@ if __name__ == "__main__":
 
     for arg in sys.argv[1:]:
         if os.path.isfile(arg):
-            print(f"File argument detected - {arg}")
+            print(f"---\nFile argument detected - {arg}\n---")
+            spelt, wc = 0, 0
             with open(arg, 'r') as fp:
                 for line in fp:
                     for word in line.split():
                         try:
+                            wc += 1
                             chem_print(spell(word, PERIODIC_TABLE))
+                            spelt += 1
                         except SpellingError:
-                            print(f"{arg} does not have a chemical spelling")
+                            print(f"{word} does not have a chemical spelling")
+            print(f"---\nFound spellings for {spelt} of the {wc} words in {arg} - {100*spelt/wc:.2f}%")
         else:
             try:
                 solution = spell(arg, PERIODIC_TABLE)
                 chem_print(solution)
             except SpellingError:
-                print(f"{arg} does not have a chemical spelling")
+                print(f"---\n{arg} does not have a chemical spelling\n---")
