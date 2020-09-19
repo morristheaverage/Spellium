@@ -13,12 +13,12 @@ class Element:
     data about each element
     """    
     def __init__(self, series):
-        self.name = series['Element']
-        self.symbol = series['Symbol']
-        self.atomic = series['AtomicNumber']
-        self.mass = series['AtomicMass']
-        self.period = series['Period']
-        self.group = series['Group']
+        self.name = series["Element"]
+        self.symbol = series["Symbol"]
+        self.atomic = series["AtomicNumber"]
+        self.mass = series["AtomicMass"]
+        self.period = series["Period"]
+        self.group = series["Group"]
 
     def __str__(self):
         return self.symbol
@@ -105,20 +105,20 @@ def chem_print(symbols: list) -> None:
         symbols (list): The list of elements
     """    
     for symbol in symbols:
-        print(str(symbol), end='')
-    print('')
+        print(str(symbol), end="")
+    print("")
 
 def word_bytes(size: int):
     # Useful constant
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
     _iter = product(alphabet, size)
     # If x0 is there so is x1, x2, ... x7
     while x0 := next(_iter, False):
         # x0 was a tuple so we make it a string...
-        packet = [''.join(x0)]
+        packet = ["".join(x0)]
         # ... and then finish the full packet of 8 strings
         for _ in range(7):
-            packet.append(''.join(next(_iter)))
+            packet.append("".join(next(_iter)))
         # And send it off
         yield packet
     # Ooh a return statement, how pythonic
@@ -134,11 +134,11 @@ def preprocess(name: str, size: int) -> None:
         size (int): Covers all words of this length - pass value of 3 or greater
     """    
     word_bank = word_bytes(size)
-    with open(name, 'wb') as fp:
+    with open(name, "wb") as fp:
         for packet in word_bank:
             bits = map(has_spelling, packet)
             result = sum(b*2**(7-i) for i, b in enumerate(bits))
-            fp.write(result.to_bytes(1, 'big'))
+            fp.write(result.to_bytes(1, "big"))
 
 
 def main():
@@ -153,7 +153,7 @@ def main():
     # Every element is 1 or 2 characters
     periodic_table = ({}, {})
     for _, row in data.iterrows():
-        lower_symbol = row['Symbol'].lower()
+        lower_symbol = row["Symbol"].lower()
         periodic_table[len(lower_symbol) - 1][lower_symbol] = Element(row)
 
 
@@ -161,7 +161,7 @@ def main():
         if os.path.isfile(arg):
             print(f"---\nFile argument detected - {arg}\n---")
             spelt, words = 0, 0
-            with open(arg, 'r') as fp:
+            with open(arg, "r") as fp:
                 for line in fp:
                     for word in line.split():
                         try:
